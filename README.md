@@ -1,6 +1,6 @@
 <h1 align="center">
-    <a href="https://amplication.com/#gh-light-mode-only">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Slurm_logo.svg">
+    <a href="https://slurm.schedmd.com/quickstart.html">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Slurm_logo.svg" width="200" height="400">
     </a>
 
 </h1>
