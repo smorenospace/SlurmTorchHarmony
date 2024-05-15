@@ -17,7 +17,7 @@
 
 provides a comprehensive codebase for NLP distributed training using Slurm. This repository includes various alternatives for executing distributed training, encompassing all possibilities with Slurm and Torch code integration.
 
-### Tree Structure and Contents
+## Tree Structure and Contents
 
 > The directory structure provided in this repository is as follows:
 
@@ -32,4 +32,24 @@ provides a comprehensive codebase for NLP distributed training using Slurm. This
     ├── aux
     └── README.md
 
-Below is a detailed point-by-point description of each code component:
+Below is a detailed point-by-point description of each code component.
+
+### Distributed
+
+1. Launch processes by slurm library.
+
+        sbatch launch_slurm_to_torch.sh
+
+Here, the slurm variable --ntasks-per-node launch a specific number of process in each node. Therefore, there is no need to launch multiprocessing process by the interface of pytorch.
+
+2. Launch processes by torchrun.
+
+        sbatch launch_slurm_with_torchrun.sh
+
+Here, torchrun automatically launch the number of processes by the specific features. 
+
+3. Launch processes by torch multiprocessing.
+
+       sbatch launch_slurm_with_torchmultiprocessing.sh
+
+Here, the developer takes control of each of the required processes in the python code.
