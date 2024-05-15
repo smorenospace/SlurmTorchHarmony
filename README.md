@@ -20,6 +20,7 @@ provides a comprehensive codebase for NLP distributed training using Slurm. This
 ## Slurm basics
 
 In the following, the procedure for launch works with slurms is detailed step by step. The next image provide a simple overview of the hardware machine available and how slurm asign the resources using this code example:
+
         sbatch 
         –node=localhost
         –cores-per-socket=5
