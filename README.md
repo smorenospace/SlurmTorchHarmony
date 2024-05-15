@@ -3,7 +3,7 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Slurm_logo.svg" width="100" height="90">
     </a>
     <a href="https://pytorch.org/tutorials/beginner/dist_overview.html">
-    <img src="https://img-c.udemycdn.com/course/750x422/2373814_6e99_2.jpgg" width="90" height="25">
+    <img src="https://heidloff.net/assets/img/2023/09/python-pytorch.png" width="100" height="90">
     </a>
 </h1>
 
