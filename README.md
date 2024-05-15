@@ -15,4 +15,21 @@
 
 ## Introduction
 
-`SlurmTorchHarmony' provides a complete code overview for NLP distributed training using slurm. This repository include all alternatives to launch the execution considering all posibilities from slurm+torch codes. The directory tree provided in this repository is the following (later we include point-by-point what each code contains.
+provides a comprehensive codebase for NLP distributed training using Slurm. This repository includes various alternatives for executing distributed training, encompassing all possibilities with Slurm and Torch code integration.
+
+## Tree Structure and Contents
+
+The directory structure provided in this repository is as follows:
+
+$ tree
+.
+├── distributed
+│   ├── file11.ext
+│   └── file12.ext
+├── local
+│   ├── file21.ext
+│   ├── file22.ext
+│   └── file23.ext
+└── README.md
+
+Below is a detailed point-by-point description of each code component:
