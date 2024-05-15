@@ -21,15 +21,16 @@ provides a comprehensive codebase for NLP distributed training using Slurm. This
 
 The directory structure provided in this repository is as follows:
 
-### A typical top-level directory layout
-
-    .
-    ├── build                   # Compiled files (alternatively `dist`)
-    ├── docs                    # Documentation files (alternatively `doc`)
-    ├── src                     # Source files (alternatively `lib` or `app`)
-    ├── test                    # Automated tests (alternatively `spec` or `tests`)
-    ├── tools                   # Tools and utilities
-    ├── LICENSE
-    └── README.md
+###
+.
+├── distributed
+│   ├── file11.ext
+│   └── file12.ext
+├── local
+│   ├── file21.ext
+│   ├── file22.ext
+│   └── file23.ext
+├── aux
+└── README.md
 
 Below is a detailed point-by-point description of each code component:
