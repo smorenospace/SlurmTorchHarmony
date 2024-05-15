@@ -12,3 +12,7 @@
 <p align="center">
   <i align="center">🚀 Code examples and best practices for distributed [slurm+torch] for NLP 🚀</i>
 </p>
+
+## Introduction
+
+`SlurmTorchHarmony' provides a complete code overview for NLP distributed training using slurm. This repository include all alternatives to launch the execution considering all posibilities from slurm+torch codes. The directory tree provided in this repository is the following (later we include point-by-point what each code contains.
