@@ -19,9 +19,20 @@ provides a comprehensive codebase for NLP distributed training using Slurm. This
 
 ## Slurm basics
 
-In the following, the procedure for launch works with slurms is detailed step by step. The next image provide a simple overview of the hardware machine available.
+In the following, the procedure for launch works with slurms is detailed step by step. The next image provide a simple overview of the hardware machine available and how slurm asign the resources using this code example:
+        sbatch 
+        –node=localhost
+        –cores-per-socket=5
+        –mem=16000
+        –mem-per-cpu=3200
+        –exclusive
+        –gpus-per-node=2 ./example.sh
 
-<img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a0ed319e-9c25-42bc-b1ac-f2eaaea186c7" alt="hardware_basics" width="360" height="220">
+
+<h1 align="center">
+    <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a0ed319e-9c25-42bc-b1ac-f2eaaea186c7" alt="hardware_basics" width="360" height="220">
+    <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/9308c7e0-35fc-4ffe-b353-fce4a5dc566f" alt="slurm_launch" width="360" height="220">
+</h1>
 
 
 Next, 
