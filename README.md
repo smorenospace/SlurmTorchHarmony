@@ -21,7 +21,7 @@ provides a comprehensive codebase for NLP distributed training using Slurm. This
 
 In the following, the procedure for launch works with slurms is detailed step by step. The next image provide a simple overview of the hardware machine available.
 
-![hardware_basics](https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a0ed319e-9c25-42bc-b1ac-f2eaaea186c7)
+![hardware_basics](https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a0ed319e-9c25-42bc-b1ac-f2eaaea186c7)=250x250
 
 Next, 
 
