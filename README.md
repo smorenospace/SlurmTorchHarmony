@@ -5,7 +5,7 @@
 </h1>
 <h1 align="center">
     <a href="https://pytorch.org/tutorials/beginner/dist_overview.html">
-    <img src="https://cdn-images-1.medium.com/max/1200/1*KKADWARPMxHb-WMxCgW_xA.png" width="100" height="90">
+    <img src="https://cdn-images-1.medium.com/max/1200/1*KKADWARPMxHb-WMxCgW_xA.png" width="100" height="50">
     </a>
 </h1>
 
