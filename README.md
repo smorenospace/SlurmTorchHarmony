@@ -61,7 +61,21 @@ Below is a detailed point-by-point description of each code component.
 
         sbatch launch_slurm_to_torch.sh
 
-Here, the slurm variable --ntasks-per-node launch a specific number of process in each node. Therefore, there is no need to launch multiprocessing process by the interface of pytorch.
+Here, the slurm variable --ntasks-per-node launch a specific number of process in each node. Therefore, there is no need to launch multiprocessing process by the interface of pytorch. The following example details this operation with the respective image:
+
+        sbatch –node=localhost
+        –cores-per-socket=5
+        –mem=16000
+        –mem-per-cpu=3200
+        –exclusive
+        –gpus-per-node=2
+        –ntasks-per-node=2
+        –gpus-per-task=1
+        –cpus-per-task=5 ./example.sh
+
+<h1 align="center">
+    <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/d176fedb-fcc9-4454-afdf-48462f0461c1 " alt="slurm_to_torch" width="360" height="220">
+</h1>
 
 2. Launch processes by torchrun.
 
