@@ -36,6 +36,15 @@ In the following, the procedure for launch works with slurms is detailed step by
         –exclusive
         –gpus-per-node=2 ./example.sh
 
+Alternatively, you can use srun for python files:
+
+        srun 
+        –node=localhost
+        –cores-per-socket=5
+        –mem=16000
+        –mem-per-cpu=3200
+        –exclusive
+        –gpus-per-node=2 python example.py
 
 <h1 align="center">
     <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a0ed319e-9c25-42bc-b1ac-f2eaaea186c7" alt="hardware_basics" width="360" height="220">
