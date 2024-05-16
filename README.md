@@ -29,7 +29,7 @@ This package provides a comprehensive codebase for NLP distributed training usin
 In the following, the procedure for launch works with slurms is detailed step by step. The next image provide a simple overview of the hardware machine available and how slurm asign the resources using this code example:
 
         sbatch 
-        –node=localhost
+        –node=machine1
         –cores-per-socket=5
         –mem=16000
         –mem-per-cpu=3200
@@ -39,7 +39,7 @@ In the following, the procedure for launch works with slurms is detailed step by
 Alternatively, you can use srun for python files:
 
         srun 
-        –node=localhost
+        –node=machine1
         –cores-per-socket=5
         –mem=16000
         –mem-per-cpu=3200
@@ -89,7 +89,7 @@ Below is a detailed point-by-point description of each code component.
 
 Here, the slurm variable --ntasks-per-node launch a specific number of process in each node. Therefore, there is no need to launch multiprocessing process by the interface of pytorch. The following example details this operation with the respective image:
 
-        sbatch –node=localhost
+        sbatch –node=machine1
         –cores-per-socket=5
         –mem=16000
         –mem-per-cpu=3200
@@ -100,14 +100,36 @@ Here, the slurm variable --ntasks-per-node launch a specific number of process i
         –cpus-per-task=5 ./example.sh
 
 <h1 align="left">
-    <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/d176fedb-fcc9-4454-afdf-48462f0461c1" alt="slurm_to_torch" width="380" height="240">
+    <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/d176fedb-fcc9-4454-afdf-48462f0461c1" alt="slurm_to_torch" width="360" height="220">
 </h1>
 
 2. Launch processes by torchrun.
 
         sbatch launch_slurm_with_torchrun.sh
 
-Here, torchrun automatically launch the number of processes by the specific features. 
+Before the torchrun statement this generates the following slurm configuration (left next image):
+
+<h1 align="left">
+        <img src="(https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a08a8b8c-571b-4b91-b8a5-5071a0bf6258" alt="torchrun" width="360" height="220">
+        <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/9308c7e0-35fc-4ffe-b353-fce4a5dc566f" alt="slurm_launch" width="360" height="220">
+</h1>
+
+Then, torchrun automatically launch the number of processes by the specific features (right previous image). Therefore, we only launch 1 slurm task. The example code contained in launch_slurm_with_torchrun.sh is similar to:
+
+        #!/bin/bash
+        CUDA_VISIBLE_DEVICES=0,1
+        torchrun
+            --standalone
+            --nnodes=1
+            --nproc-per-node=2
+            YOUR_TRAINING_SCRIPT.py (--arg1 ... train script args...)
+
+where, YOUR_TRAINING_SCRIPT.py must contain at some point the fix on processes to gpu based on local ranks.
+
+        local_rank = int(os.environ["LOCAL_RANK"])
+        torch.cuda.set_device(local_rank) #0,1 cuda devices
+
+
 
 3. Launch processes by torch multiprocessing.
 
