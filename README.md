@@ -15,7 +15,7 @@
 
 ## Introduction
 
-provides a comprehensive codebase for NLP distributed training using Slurm. This repository includes various alternatives for executing distributed training, encompassing all possibilities with Slurm and Torch code integration.
+This package provides a comprehensive codebase for NLP distributed training using Slurm. This repository includes various alternatives for executing distributed training, encompassing all possibilities with Slurm and Torch code integration.
 
 ## Installation
         wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
