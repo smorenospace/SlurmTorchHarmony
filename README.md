@@ -17,6 +17,13 @@
 
 provides a comprehensive codebase for NLP distributed training using Slurm. This repository includes various alternatives for executing distributed training, encompassing all possibilities with Slurm and Torch code integration.
 
+## Installation
+        wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
+        ./Anaconda3-2023.09-0-Linux-x86_64.sh (during installation set PREFIX=/home/<USER>/anaconda3)
+        git clone https://github.com/smorenospace/SlurmTorchHarmony.git
+        cd SlurmTorchHarmony/
+        conda install requirements.yml or pip install requirements.txt
+
 ## Slurm basics
 
 In the following, the procedure for launch works with slurms is detailed step by step. The next image provide a simple overview of the hardware machine available and how slurm asign the resources using this code example:
