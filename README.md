@@ -42,8 +42,18 @@ In the following, the procedure for launch works with slurms is detailed step by
     <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/9308c7e0-35fc-4ffe-b353-fce4a5dc566f" alt="slurm_launch" width="360" height="220">
 </h1>
 
+The information about the machines can be stated by the "sinfo" command. The output is the following:
 
-Next, 
+| PARTITION | AVAIL | TIMELIMIT | NODES | STATE | NODELIST
+| --- | --- | --- | --- | --- | --- |
+| gpus | up | infinite | 3 | idle or mix or alloc | machine1,machine2,machine2
+
+Next, to check the state of your job, the queue can be display by using the "squeue" command. The output is the following:
+
+| JOBID | PARTITION | NAME | USER | STATE | TIME | NODES | NODELIST (REASON in case not running) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 124 | gpus | example.sh | smoreno | RUNNING | 04:23 | 2 | machine1,machine2 |
+| 125 | gpus | example2.sh | jrodri | PENDING | 0:00 | 2 | RESOURCES (waiting resources) |
 
 ## Tree Structure and Contents
 
