@@ -73,8 +73,8 @@ Here, the slurm variable --ntasks-per-node launch a specific number of process i
         –gpus-per-task=1
         –cpus-per-task=5 ./example.sh
 
-<h1 align="center">
-    <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/d176fedb-fcc9-4454-afdf-48462f0461c1 " alt="slurm_to_torch" width="360" height="220">
+<h1 align="left">
+    <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/d176fedb-fcc9-4454-afdf-48462f0461c1" alt="slurm_to_torch" width="380" height="240">
 </h1>
 
 2. Launch processes by torchrun.
