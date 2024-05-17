@@ -127,9 +127,18 @@ where, YOUR_TRAINING_SCRIPT.py must contain at some point the fix on processes t
         torch.cuda.set_device(local_rank) #0,1 cuda devices
 
 
-
 3. Launch processes by torch multiprocessing.
 
        sbatch launch_slurm_with_torchmultiprocessing.sh
 
-Here, the developer takes control of each of the required processes in the python code.
+Here, the developer takes control of each of the required processes in the python code. Similar to the previous point 2, we only launch 1 slurm task. The example code contained in launch_slurm_with_mp.sh is similar to:
+
+        #!/bin/bash
+        CUDA_VISIBLE_DEVICES=0,1
+        python YOUR_TRAINING_SCRIPT.py (--arg1 ... train script args...)
+
+where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py must contain at some point the fix on processes to gpu based on local ranks. The workaround is the same than the previous two Figures from point 2.
+
+        mp.spawn(nprocs=2)
+        local_rank = int(os.environ["LOCAL_RANK"])
+        torch.cuda.set_device(local_rank) #0,1 cuda devices
