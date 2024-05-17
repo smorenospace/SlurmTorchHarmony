@@ -111,7 +111,7 @@ Before the torchrun statement this generates the following slurm configuration (
 
 <h1 align="center">
         <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a08a8b8c-571b-4b91-b8a5-5071a0bf6258" alt="torchrun" width="340" height="240">
-        <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/d176fedb-fcc9-4454-afdf-48462f0461c1" alt="slurm_to_torch" width="360" height="220">
+        <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/d176fedb-fcc9-4454-afdf-48462f0461c1" alt="slurm_to_torch" width="360" height="240">
 </h1>
 
 Then, torchrun automatically launch the number of processes by the specific features (right previous image). Therefore, we only launch 1 slurm task. The example code contained in launch_slurm_with_torchrun.sh is similar to:
