@@ -142,3 +142,7 @@ where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py mus
         mp.spawn(nprocs=2)
         local_rank = int(os.environ["LOCAL_RANK"])
         torch.cuda.set_device(local_rank) #0,1 cuda devices
+
+### Core idea
+
+The main concern is to correctly create a **distributed environment within torch and asign the respective local ranks from slurm to the respective GPUs**. Therefore, these two steps must be ensured for points 1 and 3. On the other hand, point 2 only require gpu assign since the distributed environment is already launch. The respective code is:
