@@ -5,9 +5,9 @@
 
 ### e.g. request 2 nodes with 1 gpu each, totally 2 gpus (WORLD_SIZE==2)
 ### Note: --gres=gpu:x should equal to ntasks-per-node
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --gres=gpu:1
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=2
+#SBATCH --gpus-per-node=2
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=2gb
 
@@ -17,6 +17,7 @@
 
 master_addr=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)
 export MASTER_ADDR=$master_addr
+export MASTER_PORT=12340
 echo "MASTER_ADDR="$MASTER_ADDR
 
 ### init virtual environment if needed

@@ -1,17 +1,22 @@
 import logging
 import math
 from typing import *
+import os
+from tensorboardX import SummaryWriter
 
 import torch
+import torch.nn as nn
 import torch.nn.utils as torch_utils
 from datasets import load_metric
 from tqdm import tqdm
 from transformers import AdamW, get_linear_schedule_with_warmup
 
+from utils import AverageMeter
+
 class BaseTrainer(object):
     def __init__(self, args, loaders, model):
         self.args = args
-        self.rank: int = self.args.rank
+        self.rank: int = self.args.local_rank
         self.main_process: bool = self.rank in [-1, 0]
         self.nprocs: int = torch.cuda.device_count()
         self.scaler = torch.cuda.amp.GradScaler() if self.args.amp else None
@@ -32,7 +37,7 @@ class BaseTrainer(object):
         self.max_grad_norm = self.args.max_grad_norm
         self.gradient_accumulation_step = self.args.gradient_accumulation_step
         self.step_total = (
-            len(self.trn_loader) // self.gradient_accumulation_step * self.args.epoch
+            len(self.trn_loader) // self.gradient_accumulation_step * self.args.epochs
         )
 
         # model saving options
@@ -40,7 +45,7 @@ class BaseTrainer(object):
         self.eval_step = (
             int(self.step_total * self.args.eval_ratio)
             if self.args.eval_ratio > 0
-            else self.step_total // self.args.epoch
+            else self.step_total // self.args.epochs
         )
         if self.main_process:
             self.version = 0
@@ -55,12 +60,7 @@ class BaseTrainer(object):
                     self.version += 1
             self.summarywriter = SummaryWriter(self.save_path)
             self.global_dev_loss = float("inf")
-            with open(
-                os.path.join(self.save_path, "args.yaml"), "w", encoding="utf8"
-            ) as outfile:
-                yaml.dump(
-                    args, outfile, default_flow_style=False, allow_unicode=True
-                )
+  
 
             # experiment logging options
             self.best_result = {"version": self.version}
@@ -70,6 +70,38 @@ class BaseTrainer(object):
                 level=logging.INFO,
                 format="%(asctime)s > %(message)s",
             )
+            
+    def get_parameter_names(self, model, forbidden_layer_types):
+        """
+        Returns the names of the model parameters that are not inside a forbidden layer.
+        """
+        result = []
+        for name, child in model.named_children():
+            result += [
+                f"{name}.{n}"
+                for n in self.get_parameter_names(child, forbidden_layer_types)
+                if not isinstance(child, tuple(forbidden_layer_types))
+            ]
+        # Add model specific parameters (defined with nn.Parameter) since they are not in any child.
+        result += list(model._parameters.keys())
+        return result
+
+    def save_checkpoint(
+        self, epoch: int, dev_loss: float, model: nn.Module, num_ckpt: int
+    ) -> None:
+        logging.info(
+            f"      Dev loss decreased ({self.global_dev_loss:.5f} → {dev_loss:.5f}). Saving model ..."
+        )
+        new_path = os.path.join(
+            self.save_path, f"best_model_step_{self.global_step}_loss_{dev_loss:.5f}.pt"
+        )
+
+        for filename in glob.glob(os.path.join(self.save_path, "*.pt")):
+            # TODO: save model up to num_ckpt
+            os.remove(filename)  # remove old checkpoint
+        torch.save(model.state_dict(), new_path)
+        self.global_dev_loss = dev_loss
+
 
 class Trainer(BaseTrainer):
     """
@@ -128,7 +160,7 @@ class Trainer(BaseTrainer):
         self.optimizer.zero_grad()
         self.optimizer.step()
         for epoch in tqdm(
-            range(self.args.epoch), desc="epoch", disable=not self.main_process
+            range(self.args.epochs), desc="epoch", disable=not self.main_process
         ):
             if self.args.distributed:
                 self.train_sampler.set_epoch(epoch)
