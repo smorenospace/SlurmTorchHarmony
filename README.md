@@ -147,21 +147,21 @@ where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py mus
 
 The main concern is to correctly create a **distributed environment within torch and asign the respective local ranks from slurm to the respective GPUs**. Therefore, these two steps must be ensured for points 1 and 3. On the other hand, point 2 only require gpu assign since the distributed environment is already launch. To set the gpus use torch.cuda.set_device. The Step [0] of the code prints this information for 2 nodes with 2 gpus (ranks 0 and 1).
 
-[Step 0] Check GPUs and process assigment
-_____________________________________________
-This is process number  0  set to GPU device number (local rank: 0 == local gpu: 0 )
-_____________________________________________
-[Step 0] Check GPUs and process assigment
-_____________________________________________
-This is process number  3  set to GPU device number (local rank: 1 == local gpu: 1 )
-_____________________________________________
-[Step 0] Check GPUs and process assigment
-_____________________________________________
-This is process number  1  set to GPU device number (local rank: 1 == local gpu: 1 )
-_____________________________________________
-[Step 0] Check GPUs and process assigment
-_____________________________________________
-This is process number  2  set to GPU device number (local rank: 0 == local gpu: 0 )
-_____________________________________________
+        [Step 0] Check GPUs and process assigment
+        _____________________________________________
+        This is process number  0  set to GPU device number (local rank: 0 == local gpu: 0 )
+        _____________________________________________
+        [Step 0] Check GPUs and process assigment
+        _____________________________________________
+        This is process number  3  set to GPU device number (local rank: 1 == local gpu: 1 )
+        _____________________________________________
+        [Step 0] Check GPUs and process assigment
+        _____________________________________________
+        This is process number  1  set to GPU device number (local rank: 1 == local gpu: 1 )
+        _____________________________________________
+        [Step 0] Check GPUs and process assigment
+        _____________________________________________
+        This is process number  2  set to GPU device number (local rank: 0 == local gpu: 0 )
+        _____________________________________________
 
 
