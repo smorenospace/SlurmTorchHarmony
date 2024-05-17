@@ -89,7 +89,7 @@ Below is a detailed point-by-point description of each code component based on 3
 
 Here, the slurm variable --ntasks-per-node launch a specific number of process in each node. Therefore, there is no need to launch multiprocessing process by the interface of pytorch. The following example details this operation with the respective image:
 
-        sbatch –node=machine1
+        sbatch –node=machine1 (--nodes=1 in case you are not interest in a specific machine)
         –cores-per-socket=5
         –mem=16000
         –mem-per-cpu=3200
@@ -145,4 +145,23 @@ where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py mus
 
 ### Core idea
 
-The main concern is to correctly create a **distributed environment within torch and asign the respective local ranks from slurm to the respective GPUs**. Therefore, these two steps must be ensured for points 1 and 3. On the other hand, point 2 only require gpu assign since the distributed environment is already launch. The respective code is:
+The main concern is to correctly create a **distributed environment within torch and asign the respective local ranks from slurm to the respective GPUs**. Therefore, these two steps must be ensured for points 1 and 3. On the other hand, point 2 only require gpu assign since the distributed environment is already launch. To set the gpus use torch.cuda.set_device. The Step [0] of the code prints this information for 2 nodes with 2 gpus (ranks 0 and 1).
+
+[Step 0] Check GPUs and process assigment
+_____________________________________________
+This is process number  0  set to GPU device number (local rank: 0 == local gpu: 0 )
+_____________________________________________
+[Step 0] Check GPUs and process assigment
+_____________________________________________
+This is process number  3  set to GPU device number (local rank: 1 == local gpu: 1 )
+_____________________________________________
+[Step 0] Check GPUs and process assigment
+_____________________________________________
+This is process number  1  set to GPU device number (local rank: 1 == local gpu: 1 )
+_____________________________________________
+[Step 0] Check GPUs and process assigment
+_____________________________________________
+This is process number  2  set to GPU device number (local rank: 0 == local gpu: 0 )
+_____________________________________________
+
+
