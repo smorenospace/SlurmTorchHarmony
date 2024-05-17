@@ -2,3 +2,7 @@
 
 ./distributed/chkpt
 ./local/chkpt
+
+*.out
+./distributed/*.out
+./local/*.out
