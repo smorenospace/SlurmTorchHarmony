@@ -110,7 +110,7 @@ Here, the slurm variable --ntasks-per-node launch a specific number of process i
 Before the torchrun statement this generates the following slurm configuration (left next image):
 
 <h1 align="center">
-        <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a08a8b8c-571b-4b91-b8a5-5071a0bf6258" alt="torchrun" width="340" height="220">
+        <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a08a8b8c-571b-4b91-b8a5-5071a0bf6258" alt="torchrun" width="340" height="240">
         <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/d176fedb-fcc9-4454-afdf-48462f0461c1" alt="slurm_to_torch" width="360" height="220">
 </h1>
 
