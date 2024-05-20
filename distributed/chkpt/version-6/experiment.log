@@ -1,2 +1,0 @@
-2024-05-20 19:44:51,937 > [SCHEDULER] Total_step: 3120 | Warmup step: 312 | Accumulation step: 1
-2024-05-20 19:46:35,780 > [TRN] Version: 6 | Epoch: 0 | Global step: 200 | Train loss: 0.70449 | LR: 0.00064
