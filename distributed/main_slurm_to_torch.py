@@ -12,14 +12,7 @@ from transformers import BertForSequenceClassification, BertTokenizer
 
 torch.backends.cudnn.benchmark = True
     
-
-
-
-
-
-
 def main(args):
-
 
     if "WORLD_SIZE" in os.environ:
         args.world_size = int(os.environ["WORLD_SIZE"])
@@ -45,14 +38,15 @@ def main(args):
     print("_____________________________________________")
     print("This is process number ", args.global_rank, " set to GPU device number (local rank:", args.local_rank , "== local gpu:", args.gpu_id, ")")
     print("_____________________________________________")
+    dist.barrier()
 
     # suppress printing if not on master gpu
-    if args.global_rank != 0:
-        def print_pass(*args):
-            pass
-        builtins.print = print_pass
+    #if args.global_rank != 0:
+    #    def print_pass(*args):
+    #        pass
+    #    builtins.print = print_pass
 
-    dist.barrier()
+
     print("\n[Step 1] Loading dataset\n")
     loaders = get_trn_dev_loader(
         dset=load_dataset("imdb", split="train"),
@@ -77,9 +71,10 @@ def main(args):
         
     # training phase
     print("\n[Step 3] Training is starting\n")
-    exit()
+
     trainer = Trainer(args, tokenizer, loaders, model)
     best_result = trainer.fit(num_ckpt=1)
+    exit()
 
     # testing phase
     if rank in [-1, 0]:

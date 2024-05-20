@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=testing
 #SBATCH --partition=volta
-#SBATCH --time=60
+#SBATCH --time=360
 
 ### e.g. request 2 nodes with 1 gpu each, totally 2 gpus (WORLD_SIZE==2)
 ### Note: --gres=gpu:x should equal to ntasks-per-node
@@ -18,6 +18,7 @@
 master_addr=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)
 export MASTER_ADDR=$master_addr
 export MASTER_PORT=12340
+export CUDA_VISIBLE_DEVICES=0,1
 echo "MASTER_ADDR="$MASTER_ADDR
 
 ### init virtual environment if needed

@@ -7,6 +7,7 @@ from tensorboardX import SummaryWriter
 import torch
 import torch.nn as nn
 import torch.nn.utils as torch_utils
+from torch.nn.parallel import DistributedDataParallel as DDP
 from datasets import load_metric
 from tqdm import tqdm
 from transformers import AdamW, get_linear_schedule_with_warmup
@@ -16,8 +17,9 @@ from utils import AverageMeter
 class BaseTrainer(object):
     def __init__(self, args, loaders, model):
         self.args = args
-        self.rank: int = self.args.local_rank
-        self.main_process: bool = self.rank in [-1, 0]
+        self.local_rank: int = self.args.local_rank
+        self.global_rank: int = self.args.global_rank
+        self.main_process: bool = self.global_rank in [-1, 0]
         self.nprocs: int = torch.cuda.device_count()
         self.scaler = torch.cuda.amp.GradScaler() if self.args.amp else None
         if self.args.distributed:
@@ -29,7 +31,7 @@ class BaseTrainer(object):
         self.model = model
         self.model = model.to(self.device, non_blocking=True)
         if self.args.distributed:
-            self.model = DDP(self.model, device_ids=[self.rank])
+            self.model = DDP(self.model, device_ids=[self.local_rank])
         elif self.nprocs > 1:
             self.model = nn.DataParallel(self.model)
 
