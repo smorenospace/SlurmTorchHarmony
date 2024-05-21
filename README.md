@@ -26,7 +26,7 @@ This package provides a comprehensive codebase for NLP distributed training usin
 
 ## Slurm basics
 
-In the following, the procedure for launch works with slurms is detailed step by step. $${\textcolor{red}{NEVER LAUNCH CODE WITH PYTHON, ALWAYS USE SLURM THROUGH THE FOLLOWING COMMANDS}}$$. The next image provide a simple overview of the hardware machine available (yellow=idle, red=alloc, black=restricted) and how slurm asign the resources using this code example:
+In the following, the procedure for launch works with slurms is detailed step by step. $${\textcolor{red}{NEVER \space LAUNCH \space CODE \space WITH \space PYTHON, \space ALWAYS \space USE \space SLURM \space THROUGH \space THE \space FOLLOWING COMMANDS}}$$. The next image provide a simple overview of the hardware machine available (yellow=idle, red=alloc, black=restricted) and how slurm asign the resources using this code example:
 
         sbatch 
         –node=machine1
