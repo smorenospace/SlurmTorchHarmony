@@ -15,7 +15,7 @@
 
 ## Introduction
 
-This package provides a comprehensive codebase for NLP distributed training using Slurm. This repository includes various alternatives for executing distributed training, encompassing all possibilities with Slurm and Torch code integration.
+This package provides a comprehensive codebase for NLP distributed training using Slurm. The repository includes various alternatives for executing distributed training, encompassing all possibilities with Slurm and Torch code integration.
 
 ## Installation
         wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
@@ -26,7 +26,7 @@ This package provides a comprehensive codebase for NLP distributed training usin
 
 ## Slurm basics
 
-In the following, the procedure for launch works with slurms is detailed step by step. The next image provide a simple overview of the hardware machine available and how slurm asign the resources using this code example:
+In the following, the procedure for launch works with slurms is detailed step by step. **{\color{red}{NEVER LAUNCH CODE WITH PYTHON, ALWAYS USE SLURM THROUGH THE FOLLOWING COMMANDS}}** `#f03c15`. The next image provide a simple overview of the hardware machine available (yellow=idle, red=alloc, black=restricted) and how slurm asign the resources using this code example:
 
         sbatch 
         –node=machine1
@@ -57,7 +57,7 @@ The information about the machines can be stated by the "sinfo" command. The out
 | --- | --- | --- | --- | --- | --- |
 | gpus | up | infinite | 3 | idle or mix or alloc | machine1,machine2,machine2
 
-Next, to check the state of your job, the queue can be display by using the "squeue" command. The output is the following:
+To check the state of your job, the queue can be display by using the "squeue" command. The output is the following:
 
 | JOBID | PARTITION | NAME | USER | STATE | TIME | NODES | NODELIST (REASON in case not running) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -107,7 +107,7 @@ Here, the slurm variable --ntasks-per-node launch a specific number of process i
 
         sbatch launch_slurm_with_torchrun.sh
 
-Before the torchrun statement this generates the following slurm configuration (left next image):
+Before the torchrun statement, the execution of the previous command generates the following slurm configuration (left next image):
 
 <h1 align="center">
         <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a08a8b8c-571b-4b91-b8a5-5071a0bf6258" alt="torchrun" width="340" height="240">
@@ -164,4 +164,18 @@ The main concern is to correctly create a **distributed environment within torch
         This is process number  2  set to GPU device number (local rank: 0 == local gpu: 0 )
         _____________________________________________
 
+### Output example
 
+Coming soon...
+
+### Data distribution
+
+Coming soon...
+
+### Local
+
+Coming soon...
+
+### Distributed convergen proof
+
+Coming soon...
