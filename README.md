@@ -70,13 +70,24 @@ To check the state of your job, the queue can be display by using the "squeue" c
 
     .
     ├── distributed
-    │   ├── file11.ext
-    │   └── file12.ext
+    │   ├── launch_slurm_to_torch.sh (slurm launch file 1st alternative)
+    │   ├── launch_slurm_with_torchrun.sh (slurm launch file 2nd alternative)
+    │   ├── launch_slurm_with_multiprocessing.sh (slurm launch file 3rd alternative)
+    │   ├── loader.py (dataloader)
+    │   ├── trainer.py (train and test functions)
+    │   ├── utils.py (auxilary functions)
+    │   ├── chkpt 
+    │   │   ├──  version-id
+    │   │   │   ├── acc (output accuracy logs)
+    │   │   │   ├── loss (output loss logs)
+    │   │   │   ├── lr (learning rate logs)
+    │   │   │   ├── events.out.tfevents (tensorboard)
+    │   │   │   ├── experiment.log (log)
     ├── local
     │   ├── file21.ext
     │   ├── file22.ext
     │   └── file23.ext
-    ├── aux
+    ├── convergence
     └── README.md
 
 Below is a detailed point-by-point description of each code component based on 3 launch alternatives.
