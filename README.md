@@ -87,7 +87,7 @@ To check the state of your job, the queue can be display by using the "squeue" c
     │   ├── file21.ext
     │   ├── file22.ext
     │   └── file23.ext
-    ├── convergence
+    ├── convergence_proof
     └── README.md
 
 Below is a detailed point-by-point description of each code component based on 3 launch alternatives.
