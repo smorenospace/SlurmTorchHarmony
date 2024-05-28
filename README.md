@@ -129,7 +129,7 @@ Then, torchrun automatically launch the number of processes by the specific feat
 
         #!/bin/bash
         CUDA_VISIBLE_DEVICES=0,1
-        torchrun --standalone --nnodes=1 --nproc-per-node=2
+        srun torchrun --standalone --nnodes=1 --nproc-per-node=2
            YOUR_TRAINING_SCRIPT.py (--arg1 ... train script args...)
 
 where, YOUR_TRAINING_SCRIPT.py must contain at some point the fix on processes to gpu based on local ranks.
