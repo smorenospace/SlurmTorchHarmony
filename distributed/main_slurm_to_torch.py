@@ -1,5 +1,6 @@
 import os
 import builtins
+import glob
 import argparse
 import torch
 import numpy as np 
@@ -11,27 +12,37 @@ from datasets import load_dataset
 from transformers import BertForSequenceClassification, BertTokenizer
 
 torch.backends.cudnn.benchmark = True
-    
-def main(args):
 
-    if "WORLD_SIZE" in os.environ:
+def distributed_launch(args):
+    """
+    Initialize distributed training parameters based on the environment variables and 
+    the method used to launch the training job (torchrun, srun and torch.distributed.launch).
+    Copy this method to distributed launch. No changes required.
+    """
+    
+    if "WORLD_SIZE" in os.environ: # torchrun (option 2)
         args.world_size = int(os.environ["WORLD_SIZE"])
-    elif "SLURM_NTASKS" in os.environ: 
+        args.local_rank = int(os.environ["LOCAL_RANK"])
+    elif "SLURM_NTASKS" in os.environ: # srun launch 
         args.world_size = int(os.environ['SLURM_NTASKS'])
     args.distributed = args.world_size > 1
-    ngpus_per_node = torch.cuda.device_count()
 
     if args.distributed:
-        if args.local_rank != -1: # for torch.distributed.launch
-            args.global_rank = args.local_rank
-            args.gpu_id = args.local_rank
-        elif 'SLURM_PROCID' in os.environ: # for slurm scheduler
+        if args.local_rank != -1: # for torch.distributed.launch (option 3 and option 2)
+            args.global_rank = int(os.environ["RANK"])
+            args.gpu_id = args.global_rank % torch.cuda.device_count()
+            args.local_rank = args.gpu_id
+        elif 'SLURM_PROCID' in os.environ: # for slurm scheduler srun (option 1)
             args.global_rank = int(os.environ['SLURM_PROCID'])
             args.gpu_id = args.global_rank % torch.cuda.device_count()
             args.local_rank = args.gpu_id
         dist.init_process_group(backend=args.dist_backend, init_method=args.dist_url,
                                 world_size=args.world_size, rank=args.global_rank)
-                                
+
+    
+def main(args):
+    
+    distributed_launch(args)
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased", do_lower_case=True)
 
     print("\n[Step 0] Check GPUs and process assigment\n")
@@ -53,6 +64,7 @@ def main(args):
         tok=tokenizer,
         batch_size=args.batch_size,
         workers=args.workers,
+        rank=args.global_rank,
         distributed=args.distributed,
     )
 
@@ -61,9 +73,6 @@ def main(args):
     num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"[Model Parameters] {num_params}")
     
-    
-    ### optimizer ###
-    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     
     ### resume training from checkpoint (note that one checkpoint per global_rank) ###
     if args.resume:
@@ -74,10 +83,10 @@ def main(args):
 
     trainer = Trainer(args, tokenizer, loaders, model)
     best_result = trainer.fit(num_ckpt=1)
-    exit()
+
 
     # testing phase
-    if rank in [-1, 0]:
+    if args.global_rank in [-1, 0]:
         version = best_result["version"]
         state_dict = torch.load(
             glob.glob(
@@ -137,7 +146,7 @@ def parse_args():
     parser.add_argument('--eval-ratio', default=1, type=int, 
                         help='epochs required for evaluation')
     parser.add_argument('--log-step', default=200, type=int)
-    parser.add_argument("--weight-decay", type=float, default=1e-5)
+    parser.add_argument("--weight-decay", type=float, default=4e-5)
     parser.add_argument("--warmup-ratio", type=float, default=0.1)
     parser.add_argument(
         "--amp", action="store_true", default=False, help="PyTorch(>=1.6.x) AMP"

@@ -30,7 +30,7 @@ class IMDB(Dataset):
         return len(self.label)
 
 
-def get_trn_dev_loader(dset, tok, batch_size, workers, distributed=False) -> DataLoader:
+def get_trn_dev_loader(dset, tok, batch_size, workers, rank, distributed=False) -> DataLoader:
     """
     Return:
         Tuple[DataLoader]
@@ -67,6 +67,7 @@ def get_trn_dev_loader(dset, tok, batch_size, workers, distributed=False) -> Dat
         pin_memory=True,
         drop_last=False,
     )
+    #print("D:", rank, "==", len(trn_loader), len(dev_loader)); exit()
     return (trn_loader, dev_loader)
 
 

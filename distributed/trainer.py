@@ -1,5 +1,6 @@
 import logging
 import math
+import glob
 from typing import *
 import os
 from tensorboardX import SummaryWriter
@@ -30,6 +31,7 @@ class BaseTrainer(object):
 
         self.model = model
         self.model = model.to(self.device, non_blocking=True)
+        
         if self.args.distributed:
             self.model = DDP(self.model, device_ids=[self.local_rank])
         elif self.nprocs > 1:
@@ -188,7 +190,8 @@ class Trainer(BaseTrainer):
             token_type_ids = batch["token_type_ids"].squeeze(1)
             attention_mask = batch["attention_mask"].squeeze(1)
             labels = batch["labels"]
-
+         
+            
             input_ids = input_ids.to(self.device, non_blocking=True)
             token_type_ids = token_type_ids.to(self.device, non_blocking=True)
             attention_mask = attention_mask.to(self.device, non_blocking=True)
@@ -214,6 +217,7 @@ class Trainer(BaseTrainer):
                 loss = output.loss
 
             # update
+            print("==", self.device, "==Output", loss)
             loss = loss / self.gradient_accumulation_step
             if not self.args.distributed:
                 loss = loss.mean()
@@ -242,6 +246,7 @@ class Trainer(BaseTrainer):
                     self.global_step += 1
 
             train_loss.update(loss.item())
+            print("((( Train loss )))", train_loss, loss.item())
             if (step + 1) % self.gradient_accumulation_step != 0:
                 continue
 
@@ -261,20 +266,20 @@ class Trainer(BaseTrainer):
                     if dev_loss < self.global_dev_loss:
                         self.save_checkpoint(epoch, dev_loss, self.model, num_ckpt)
 
-            # train logging
-            if self.main_process:
-                if self.global_step != 0 and self.global_step % self.log_step == 0:
-                    logging.info(
-                        f"[TRN] Version: {self.version} | Epoch: {epoch} | Global step: {self.global_step} | Train loss: {loss.item():.5f} | LR: {self.optimizer.param_groups[0]['lr']:.5f}"
-                    )
-                    self.summarywriter.add_scalars(
-                        "loss/step", {"train": train_loss.avg}, self.global_step
-                    )
-                    self.summarywriter.add_scalars(
-                        "lr",
-                        {"lr": self.optimizer.param_groups[0]["lr"]},
-                        self.global_step,
-                    )
+        # train logging
+        if self.main_process:
+            #if self.global_step != 0 and self.global_step % self.log_step == 0:
+            logging.info(
+                f"[TRN] Version: {self.version} | Epoch: {epoch} | Global step: {self.global_step} | Train loss: {loss.item():.5f} | LR: {self.optimizer.param_groups[0]['lr']:.5f}"
+            )
+            self.summarywriter.add_scalars(
+                "loss/step", {"train": train_loss.avg}, self.global_step
+            )
+            self.summarywriter.add_scalars(
+                "lr",
+                {"lr": self.optimizer.param_groups[0]["lr"]},
+                self.global_step,
+            )
 
     @torch.no_grad()
     def validate(self, epoch: int) -> float:

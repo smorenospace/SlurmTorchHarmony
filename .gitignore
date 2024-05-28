@@ -1,7 +1,7 @@
 # Checkpoints
 
-./distributed/chkpt
-./local/chkpt
+./distributed/chkpt/*
+./local/chkpt/*
 
 *.out
 ./distributed/*.out
