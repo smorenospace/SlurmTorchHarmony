@@ -146,7 +146,7 @@ where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py mus
         local_rank = int(os.environ["LOCAL_RANK"])
         torch.cuda.set_device(local_rank) #0,1 cuda devices
 
-4. Launch processes with accelerate (for this one, an example of finetuning RACE is provided)
+4. Launch processes with accelerate (for this one, an example of finetuning RACE is provided using 2 nodes on A5000 partition)
    
        sbatch launch_slurm_with_accelerate.sh
    
