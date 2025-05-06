@@ -148,7 +148,8 @@ where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py mus
 
 4. Launch processes with accelerate (for this one, an example of finetuning RACE is provided using 2 nodes on A5000 partition)
    
-       sbatch launch_slurm_with_accelerate.sh
+       sbatch --nodes=2 --gres=gpu:A5000:2 --p=gpus --time=16:00:00 ./launch_with_accelerate.sh
+
    
 
 ### Core idea
