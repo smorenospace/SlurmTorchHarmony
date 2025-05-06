@@ -64,8 +64,7 @@ To check the state of your job, the queue can be display by using the "squeue" c
     ├── distributed
     │   ├── launch_slurm_to_torch.sh (slurm launch file 1st alternative)
     │   ├── launch_slurm_with_torchrun.sh (slurm launch file 2nd alternative)
-    │   ├── launch_slurm_with_multiprocessing.sh (slurm launch file 3rd alternative)
-    │   ├── launch_slurm_with_accelerate.sh (slurm launch file 4th alternative)
+    │   ├── launch_slurm_with_accelerate.sh (slurm launch file 4rd alternative)
     │   ├── loader.py (dataloader)
     │   ├── trainer.py (train and test functions)
     │   ├── utils.py (auxilary functions)
@@ -127,11 +126,16 @@ where, YOUR_TRAINING_SCRIPT.py must contain at some point the fix on processes t
         torch.cuda.set_device(local_rank) #0,1 cuda devices
 
 
-3. Launch processes by torch multiprocessing.
+3. Launch processes with accelerate (for this one, an example of finetuning RACE is provided using 2 nodes on A5000 partition)
+   
+       sbatch --nodes=2 --gres=gpu:A5000:2 --p=gpus --time=16:00:00 ./launch_slurm_with_accelerate.sh
+
+4. (MORE OPTIONS NOT INCLUDED IN THE REPO)
+   Launch processes by torch multiprocessing.
 
        sbatch launch_slurm_with_torchmultiprocessing.sh
 
-Here, the developer takes control of each of the required processes in the python code. Similar to the previous point 2, we only launch 1 slurm task. The example code contained in launch_slurm_with_mp.sh is similar to:
+Here, the developer takes control of each of the required processes in the python code. Similar to the previous point 2, we only launch 1 slurm task. The example code is similar to:
 
         #!/bin/bash
         CUDA_VISIBLE_DEVICES=0,1
@@ -143,11 +147,6 @@ where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py mus
         local_rank = int(os.environ["LOCAL_RANK"])
         torch.cuda.set_device(local_rank) #0,1 cuda devices
 
-4. Launch processes with accelerate (for this one, an example of finetuning RACE is provided using 2 nodes on A5000 partition)
-   
-       sbatch --nodes=2 --gres=gpu:A5000:2 --p=gpus --time=16:00:00 ./launch_slurm_with_accelerate.sh
-
-   
 
 ### Core idea
 
