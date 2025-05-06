@@ -19,7 +19,7 @@ This package provides a comprehensive codebase for NLP distributed training usin
 
 ## Installation
         wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
-        ./Anaconda3-2023.09-0-Linux-x86_64.sh (during installation set PREFIX=/home/<USER>/anaconda3)
+        ./Anaconda3-2023.09-0-Linux-x86_64.sh (during installation set PREFIX=/home/$USER/data/anaconda3)
         git clone https://github.com/smorenospace/SlurmTorchHarmony.git
         cd SlurmTorchHarmony/
         conda install requirements.yml or pip install requirements.txt
@@ -29,22 +29,13 @@ This package provides a comprehensive codebase for NLP distributed training usin
 In the following, the procedure for launch works with slurms is detailed step by step. $${\textcolor{blue}{NEVER \space LAUNCH \space CODE \space WITH \space PYTHON, \space ALWAYS \space USE \space SLURM \space THROUGH \space THE \space FOLLOWING \space COMMANDS}}$$. The next image provide a simple overview of the hardware machine available (yellow=idle, red=alloc, black=restricted) and how slurm asign the resources using this code example:
 
         sbatch 
-        –node=machine1
-        –cores-per-socket=5
-        –mem=16000
-        –mem-per-cpu=3200
-        –exclusive
-        –gpus-per-node=2 ./example.sh
+        --nodes=1
+        --p=A30
+        --node=hermes
+        --gres=gpu:A30:2
+        --gpus-per-node=2 ./example.sh
 
-Alternatively, you can use srun for python files:
-
-        srun 
-        –node=machine1
-        –cores-per-socket=5
-        –mem=16000
-        –mem-per-cpu=3200
-        –exclusive
-        –gpus-per-node=2 python example.py
+Alternatively, you can use srun for python files. Check https://slurm.schedmd.com/srun.html for more information.
 
 <h1 align="center">
     <img src="https://github.com/smorenospace/SlurmTorchHarmony/assets/169695104/a0ed319e-9c25-42bc-b1ac-f2eaaea186c7" alt="hardware_basics" width="360" height="220">
@@ -55,14 +46,15 @@ The information about the machines can be stated by the "sinfo" command. The out
 
 | PARTITION | AVAIL | TIMELIMIT | NODES | STATE | NODELIST
 | --- | --- | --- | --- | --- | --- |
-| gpus | up | infinite | 3 | idle or mix or alloc | machine1,machine2,machine2
+| A5000 | up | infinite | 2 | idle or mix or alloc | inf-004-gpu-4, inf-004-gpu-3
+| A30 | up | infinite | 1 | idle or mix or alloc | hermes
 
 To check the state of your job, the queue can be display by using the "squeue" command. The output is the following:
 
 | JOBID | PARTITION | NAME | USER | STATE | TIME | NODES | NODELIST (REASON in case not running) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 124 | gpus | example.sh | smoreno | RUNNING | 04:23 | 2 | machine1,machine2 |
-| 125 | gpus | example2.sh | jrodri | PENDING | 0:00 | 2 | RESOURCES (waiting resources) |
+| 124 | A5000 | example.sh | smoreno | RUNNING | 04:23 | 2 | inf-004-gpu-4, inf-004-gpu-3 |
+| 125 | A5000 | example2.sh | jrodri | PENDING | 0:00 | 2 | RESOURCES (waiting resources) |
 
 ## Tree Structure and Contents
 
@@ -92,7 +84,7 @@ To check the state of your job, the queue can be display by using the "squeue" c
 
 Below is a detailed point-by-point description of each code component based on 3 launch alternatives.
 
-### Distributed
+### Launch
 
 1. Launch processes by slurm library.
 
@@ -154,6 +146,11 @@ where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py mus
         local_rank = int(os.environ["LOCAL_RANK"])
         torch.cuda.set_device(local_rank) #0,1 cuda devices
 
+4. Launch processes with accelerate (for this one, an example of finetuning RACE is provided)
+   
+    sbatch launch_slurm_with_accelerate.sh
+   
+
 ### Core idea
 
 The main concern is to correctly create a **distributed environment within torch and asign the respective local ranks from slurm to the respective GPUs**. Therefore, these two steps must be ensured for points 1 and 3. On the other hand, point 2 only require gpu assign since the distributed environment is already launch. To set the gpus use torch.cuda.set_device. The Step [0] of the code prints this information for 2 nodes with 2 gpus (ranks 0 and 1).
@@ -175,18 +172,4 @@ The main concern is to correctly create a **distributed environment within torch
         This is process number  2  set to GPU device number (local rank: 0 == local gpu: 0 )
         _____________________________________________
 
-### Output example
 
-Coming soon...
-
-### Data distribution
-
-Coming soon...
-
-### Local
-
-Coming soon...
-
-### Distributed convergen proof
-
-Coming soon...
