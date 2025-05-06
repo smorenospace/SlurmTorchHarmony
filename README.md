@@ -148,7 +148,7 @@ where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py mus
 
 4. Launch processes with accelerate (for this one, an example of finetuning RACE is provided)
    
-    sbatch launch_slurm_with_accelerate.sh
+       sbatch launch_slurm_with_accelerate.sh
    
 
 ### Core idea
