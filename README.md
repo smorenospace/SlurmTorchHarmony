@@ -65,24 +65,21 @@ To check the state of your job, the queue can be display by using the "squeue" c
     │   ├── launch_slurm_to_torch.sh (slurm launch file 1st alternative)
     │   ├── launch_slurm_with_torchrun.sh (slurm launch file 2nd alternative)
     │   ├── launch_slurm_with_multiprocessing.sh (slurm launch file 3rd alternative)
+    │   ├── launch_slurm_with_accelerate.sh (slurm launch file 4th alternative)
     │   ├── loader.py (dataloader)
     │   ├── trainer.py (train and test functions)
     │   ├── utils.py (auxilary functions)
-    │   ├── chkpt 
+    │   ├── chkpt (should be created on run)
     │   │   ├──  version-id
     │   │   │   ├── acc (output accuracy logs)
     │   │   │   ├── loss (output loss logs)
     │   │   │   ├── lr (learning rate logs)
     │   │   │   ├── events.out.tfevents (tensorboard)
     │   │   │   ├── experiment.log (log)
-    ├── local
-    │   ├── file21.ext
-    │   ├── file22.ext
-    │   └── file23.ext
     ├── convergence_proof
     └── README.md
 
-Below is a detailed point-by-point description of each code component based on 3 launch alternatives.
+Below is a detailed point-by-point description of each code component based on 4 launch alternatives.
 
 ### Launch
 
@@ -148,7 +145,7 @@ where, after spawn the specific number of processes, YOUR_TRAINING_SCRIPT.py mus
 
 4. Launch processes with accelerate (for this one, an example of finetuning RACE is provided using 2 nodes on A5000 partition)
    
-       sbatch --nodes=2 --gres=gpu:A5000:2 --p=gpus --time=16:00:00 ./launch_with_accelerate.sh
+       sbatch --nodes=2 --gres=gpu:A5000:2 --p=gpus --time=16:00:00 ./launch_slurm_with_accelerate.sh
 
    
 
