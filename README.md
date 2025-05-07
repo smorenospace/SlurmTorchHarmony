@@ -126,9 +126,9 @@ where, YOUR_TRAINING_SCRIPT.py must contain at some point the fix on processes t
         torch.cuda.set_device(local_rank) #0,1 cuda devices
 
 
-3. Launch processes with accelerate (for this one, an example of finetuning RACE is provided using 2 nodes on A5000 partition)
+3. Launch processes with accelerate (for this one, an example of finetuning RACE is provided using 2 nodes and 8 GPUs on A5000 partition)
    
-       sbatch --nodes=2 --gres=gpu:A5000:2 --p=gpus --time=16:00:00 ./launch_slurm_with_accelerate.sh
+       sbatch --nodes=2 --gres=gpu:A5000:4 --partition=A5000 --time=16:00:00 ./launch_slurm_with_accelerate.sh
 
 4. (MORE OPTIONS NOT INCLUDED IN THE REPO)
    Launch processes by torch multiprocessing.
