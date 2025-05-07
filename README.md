@@ -64,7 +64,7 @@ To check the state of your job, the queue can be display by using the "squeue" c
     ├── distributed
     │   ├── launch_slurm_to_torch.sh (slurm launch file 1st alternative)
     │   ├── launch_slurm_with_torchrun.sh (slurm launch file 2nd alternative)
-    │   ├── launch_slurm_with_accelerate.sh (slurm launch file 4rd alternative)
+    │   ├── launch_slurm_with_accelerate.sh (slurm launch file 3rd alternative)
     │   ├── loader.py (dataloader)
     │   ├── trainer.py (train and test functions)
     │   ├── utils.py (auxilary functions)
