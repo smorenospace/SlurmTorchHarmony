@@ -17,6 +17,7 @@ from transformers.tokenization_utils_base import PaddingStrategy, PreTrainedToke
 from typing import Optional, Union, Dict, List
 from accelerate import Accelerator
 from tqdm.auto import tqdm
+import evaluate
 
 
 # ---------- distributed context ----------
@@ -155,6 +156,7 @@ def train(args):
 
     pbar = tqdm(range(num_updates), disable=not acc.is_main_process)
     best = 0.0
+    eva = evaluate.load("accuracy")
 
     for epoch in range(args.num_epochs):
         model.train()
@@ -176,7 +178,7 @@ def train(args):
             refs.append(acc.gather(batch["labels"]))
         preds = torch.cat(preds)[: len(ds["validation"])]
         refs  = torch.cat(refs) [: len(ds["validation"])]
-        res   = metric.compute(predictions=preds, references=refs)
+        res   = eva.compute(predictions=preds, references=refs)
 
         acc.print(f"epoch {epoch}  val-acc={res['accuracy']:.4f}")
         if res["accuracy"] > best:
