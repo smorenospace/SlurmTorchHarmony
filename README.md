@@ -84,7 +84,7 @@ Below is a detailed point-by-point description of each code component based on 4
 
 1. Launch processes by slurm library.
 
-        sbatch launch_slurm_to_torch.sh
+        sbatch --nodes=1 --gres=gpu:A5000:4 --partition=A5000 --time=16:00:00 --tasks-per-node=4 ./launch_slurm_to_torch.sh
 
 Here, the slurm variable --ntasks-per-node launch a specific number of process in each node. Therefore, there is no need to launch multiprocessing process by the interface of pytorch. The following example details this operation with the respective image:
 
@@ -104,7 +104,7 @@ Here, the slurm variable --ntasks-per-node launch a specific number of process i
 
 2. Launch processes by torchrun.
 
-        sbatch launch_slurm_with_torchrun.sh
+        sbatch --nodes=1 --gres=gpu:A5000:4 --partition=A5000 --time=16:00:00 ./launch_slurm_with_torchrun.sh
 
 Before the torchrun statement, the execution of the previous command generates the following slurm configuration (left next image):
 
