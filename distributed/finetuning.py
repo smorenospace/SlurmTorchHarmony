@@ -27,7 +27,7 @@ local_rank   = acc.local_process_index
 cache_dir    = "./cache_RACE"          # shared filesystem path
 
 # ---------- tokeniser ----------
-MODEL_NAME = "xlm-roberta-large"
+MODEL_NAME = "xlm-roberta-base"
 tokenizer  = AutoTokenizer.from_pretrained(MODEL_NAME)
 NO_ANSWER  = "None of the answers are correct."
 
@@ -193,8 +193,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--learning_rate", type=float, default=3e-5)
     ap.add_argument("--num_epochs",    type=int,   default=3)
-    ap.add_argument("--train_batch_size", type=int, default=4)
-    ap.add_argument("--eval_batch_size",  type=int, default=4)
+    ap.add_argument("--train_batch_size", type=int, default=14)
+    ap.add_argument("--eval_batch_size",  type=int, default=14)
     ap.add_argument("--seed",          type=int,   default=1234)
     args = ap.parse_args()
     train(args)

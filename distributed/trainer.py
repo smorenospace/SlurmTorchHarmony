@@ -9,9 +9,9 @@ import torch
 import torch.nn as nn
 import torch.nn.utils as torch_utils
 from torch.nn.parallel import DistributedDataParallel as DDP
-from datasets import load_metric
+import evaluate
 from tqdm import tqdm
-from transformers import AdamW, get_linear_schedule_with_warmup
+from transformers import get_linear_schedule_with_warmup
 
 from utils import AverageMeter
 
@@ -115,7 +115,7 @@ class Trainer(BaseTrainer):
     def __init__(self, args, tokenizer, loaders, model):
         super(Trainer, self).__init__(args, loaders, model)
         self.tokenizer = tokenizer
-        self.accuracy = load_metric("accuracy")
+        self.accuracy = evaluate.load("accuracy")
 
         # dataloader and distributed sampler
         if self.args.distributed:
@@ -147,7 +147,7 @@ class Trainer(BaseTrainer):
                 "weight_decay": 0.0,
             },
         ]
-        optimizer = AdamW(optimizer_grouped_parameters, lr=self.args.lr)
+        optimizer = torch.optim.Adam(optimizer_grouped_parameters, lr=self.args.lr)
 
         # lr scheduler with warmup
         self.warmup_steps = math.ceil(self.step_total * self.args.warmup_ratio)

@@ -10,8 +10,8 @@ echo "[batch] MASTER_ADDR=$MASTER_ADDR  MASTER_PORT=$MASTER_PORT"
 echo "[batch] NODES=$SLURM_NNODES  GPUS_PER_NODE=$GPUS_PER_NODE"
 
 # ---------------------------------------------------------------------
-# 2. spawn one Accelerate *front-end* per node
-#    Slurm sets $SLURM_PROCID (0…nodes-1) inside the `srun` step
+# 1. spawn one Accelerate *front-end* per node
+#    Slurm sets $SLURM_PROCID (0…nodes-1)
 # ---------------------------------------------------------------------
 srun --nodes=$SLURM_NNODES --ntasks=$SLURM_NNODES bash -c '
   echo "[front-end] global_rank=$SLURM_PROCID  local_rank=$SLURM_LOCALID  host=$(hostname)"
