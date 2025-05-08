@@ -22,7 +22,7 @@ This package provides a comprehensive codebase for NLP distributed training usin
         ./Anaconda3-2024.10-1-Linux-x86_64.sh --prefix /home/$USER/data/anaconda3 (during installation set PREFIX=/home/$USER/data/anaconda3)
         git clone https://github.com/smorenospace/SlurmTorchHarmony.git
         cd SlurmTorchHarmony/
-        conda install requirements.yml or pip install requirements.txt
+        conda install requirements.yml
 
 ## Slurm basics
 
